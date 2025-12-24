@@ -66,8 +66,10 @@ def main():
 
     template_path = "./template.html"
 
-    clean_destination("static", "docs")
+    print(f"Deleting docs directory...")
+    clean_destination("./docs")
 
+    print(f"Copying static files to docs directory...")
     repeat_copy("static", "docs")
 
     generate_pages_recusive("content", template_path, "docs", basepath)

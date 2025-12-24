@@ -1,7 +1,7 @@
 import os
 import shutil
 
-def clean_destination(source_name, destination_name):
+def clean_destination(destination_name):
     if os.path.exists(destination_name):
         shutil.rmtree(destination_name)
     os.mkdir(destination_name)
@@ -20,4 +20,3 @@ def repeat_copy(source_name, destination_name):
         else:
             os.mkdir(destination_path)
             repeat_copy(source_path, destination_path)
-            
