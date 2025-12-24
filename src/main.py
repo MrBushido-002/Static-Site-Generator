@@ -10,6 +10,7 @@ import os
 
 import sys
 
+
 def extract_title(markdown):
     blocks = markdown_to_blocks(markdown)
     for block in blocks:
@@ -18,7 +19,7 @@ def extract_title(markdown):
             return lines[0].strip("# ")
     raise Exception("No Title")
 
-def generate_page(source_path, template_path, destination_path):
+def generate_page(source_path, template_path, destination_path, basepath):
     print(f"Generating page from {source_path} to {destination_path} using {template_path}")
     with open(source_path, "r") as f:
         markdown = f.read()
@@ -30,7 +31,7 @@ def generate_page(source_path, template_path, destination_path):
     page = template_string.replace("{{ Title }}", title)
     page = page.replace("{{ Content }}", html)
     page = page.replace(f'href="/', f'href="{basepath}')
-    page = page.replace(f'src="/', f'scr="{basepath}')
+    page = page.replace(f'src="/', f'src="{basepath}')
     dirpath = os.path.dirname(destination_path)
     if dirpath != "":
         os.makedirs(dirpath, exist_ok=True)
@@ -38,7 +39,7 @@ def generate_page(source_path, template_path, destination_path):
     with open(destination_path, "w") as f:
         f.write(page)
 
-def generate_pages_recusive(source_path, template_path, destination_path):
+def generate_pages_recusive(source_path, template_path, destination_path, basepath):
     for root, dirs, files in os.walk(source_path):
         for file in files:
             if file.endswith(".md"):
@@ -46,10 +47,10 @@ def generate_pages_recusive(source_path, template_path, destination_path):
                 
                 destination_file = os.path.join(root.replace(source_path, destination_path), file.replace("md", "html"))
                 
-                generate_page(source_file, template_path, destination_file)
+                generate_page(source_file, template_path, destination_file, basepath)
 
 
-basepath = sys.argv
+
 
 
 
@@ -58,11 +59,16 @@ basepath = sys.argv
 
 
 def main():
+    if len(sys.argv) > 1:
+        basepath = sys.argv[1]
+    else:
+        basepath = "/"
+
     template_path = "./template.html"
 
     clean_destination("static", "docs")
 
-    generate_pages_recusive("content", template_path, "docs")
+    generate_pages_recusive("content", template_path, "docs", basepath)
 
 if __name__ == "__main__":
     main()
