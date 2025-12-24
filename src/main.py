@@ -29,8 +29,8 @@ def generate_page(source_path, template_path, destination_path):
     title = extract_title(markdown)
     page = template_string.replace("{{ Title }}", title)
     page = page.replace("{{ Content }}", html)
-    page = page.replace('href="/', 'href="{basepath}')
-    page = page.replace('src="/', 'scr="{basepath}')
+    page = page.replace(f'href="/', f'href="{basepath}')
+    page = page.replace(f'src="/', f'scr="{basepath}')
     dirpath = os.path.dirname(destination_path)
     if dirpath != "":
         os.makedirs(dirpath, exist_ok=True)
