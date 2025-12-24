@@ -1,4 +1,4 @@
-from copystatic import clean_destination
+from copystatic import *
 
 from mdnode import *
 
@@ -67,6 +67,8 @@ def main():
     template_path = "./template.html"
 
     clean_destination("static", "docs")
+
+    repeat_copy("static", "docs")
 
     generate_pages_recusive("content", template_path, "docs", basepath)
 
